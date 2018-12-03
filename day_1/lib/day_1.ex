@@ -5,24 +5,38 @@ defmodule Day1 do
 
   def final_frequency do
     frequencies()
-    |> sum_list(0)
+    |> Enum.sum()
   end
 
-  def sum_list([head | tail], accumulator) do
-    sum_list(tail, head + accumulator)
-  end
+  def calibration_level do
+    Process.put({__MODULE__, 0}, true)
 
-  def sum_list([], accumulator) do
-    accumulator
+    frequencies()
+    |> Stream.cycle()
+    |> Enum.reduce_while(0, fn x, current_frequency ->
+      new_frequency = current_frequency + x
+
+      key = {__MODULE__, new_frequency}
+
+      if Process.get(key) do
+        {:halt, new_frequency}
+      else
+        Process.put(key, true)
+        {:cont, new_frequency}
+      end
+    end)
   end
 
   def frequencies do
     raw_frequencies()
-    |> String.split("\n", trim: true)
-    |> Enum.map(fn x -> String.to_integer(x) end)
+    |> Stream.map(fn line ->
+      {integer, _leftover} = Integer.parse(line)
+      integer
+    end)
   end
 
   defp raw_frequencies do
-    File.read!("lib/frequency_inputs.txt")
+    "lib/frequency_inputs.txt"
+    |> File.stream!([], :line)
   end
 end

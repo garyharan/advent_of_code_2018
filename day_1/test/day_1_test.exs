@@ -3,8 +3,9 @@ defmodule Day1Test do
   doctest Day1
 
   test "converts file to list of integers" do
-    assert List.first(Day1.frequencies) == 7
-    assert List.last( Day1.frequencies) == -72362
+    frequencies = Day1.frequencies() |> Enum.to_list()
+    assert List.first(frequencies) == 7
+    assert List.last( frequencies) == -72362
   end
 
   test "trims the empty values" do
@@ -16,5 +17,6 @@ defmodule Day1Test do
   end
 
   test "finds which frequency it reaches twice first" do
+    assert Day1.calibration_level() == 72330
   end
 end
