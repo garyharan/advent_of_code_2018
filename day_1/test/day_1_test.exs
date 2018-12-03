@@ -14,4 +14,7 @@ defmodule Day1Test do
   test "calculates the right value" do
     assert Day1.final_frequency() == 505
   end
+
+  test "finds which frequency it reaches twice first" do
+  end
 end

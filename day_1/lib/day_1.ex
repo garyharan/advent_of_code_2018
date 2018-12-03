@@ -5,7 +5,15 @@ defmodule Day1 do
 
   def final_frequency do
     frequencies()
-    |> Enum.sum
+    |> sum_list(0)
+  end
+
+  def sum_list([head | tail], accumulator) do
+    sum_list(tail, head + accumulator)
+  end
+
+  def sum_list([], accumulator) do
+    accumulator
   end
 
   def frequencies do
@@ -14,7 +22,7 @@ defmodule Day1 do
     |> Enum.map(fn x -> String.to_integer(x) end)
   end
 
-  def raw_frequencies do
+  defp raw_frequencies do
     File.read!("lib/frequency_inputs.txt")
   end
 end
