@@ -51,14 +51,14 @@ defmodule Day2 do
   def checksum(list) when is_list(list) do
     list
     |> Enum.map(fn box_id ->
-    box_id
+      box_id
     |> get_row_multipliers()
     end)
     |> Enum.reduce({0, 0}, fn {twices, thrices}, {accumulated_twices, accumulated_thrices} ->
-    {accumulated_twices + twices, accumulated_thrices + thrices}
+      {accumulated_twices + twices, accumulated_thrices + thrices}
     end)
-  |> Tuple.to_list
-  |> Enum.reduce(fn x, acc -> x * acc end)
+    |> Tuple.to_list
+    |> Enum.reduce(fn x, acc -> x * acc end)
   end
 
   def get_row_multipliers(string) when is_binary(string) do
