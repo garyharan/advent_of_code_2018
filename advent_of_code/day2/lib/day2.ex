@@ -19,26 +19,21 @@ defmodule Day2 do
   end
 
   def closest_charlists([head | tail]) do
-    if closest = Enum.find(tail, &single_char_different?(&1, head)) do
-      same_chars(closest, head)
-    else
-      closest_charlists(tail)
+    Enum.find_value(tail, &one_char_difference_string(&1, head)) || closest_charlists(tail)
+  end
+
+  def one_char_difference_string(charlist1, charlist2) do
+    charlist1
+    |> Enum.zip(charlist2)
+    |> Enum.split_with(fn {cp1, cp2} -> cp1 == cp2 end)
+    |> case do
+      {codepoints, [_single_differing_character]} ->
+        codepoints
+        |> Enum.map(fn {cp, _} -> cp end)
+        |> List.to_string()
+      {_, _} ->
+        nil
     end
-  end
-
-  def same_chars(charlist1, charlist2) do
-    charlist1
-    |> Enum.zip(charlist2)
-    |> Enum.reject(fn {point_1, point_2} -> point_1 != point_2 end)
-    |> Enum.map(fn {a, _b} -> a end)
-    |> List.to_string()
-  end
-
-  def single_char_different?(charlist1, charlist2) do
-    charlist1
-    |> Enum.zip(charlist2)
-    |> Enum.count(fn {point_1, point_2} -> point_1 != point_2 end)
-    |> Kernel.==(1)
   end
 
   def checksum() do
