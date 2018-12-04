@@ -5,36 +5,43 @@ defmodule Day2 do
   Documentation for Day2.
   """
 
-  def closest([head | tail]) do
+  def closest() do
+    File.stream!("lib/ids.txt")
+    |> Stream.map(&String.trim_trailing/1)
+    |> Enum.to_list
+    |> closest
+  end
+
+  def closest(ids) when is_list(ids) do
+    ids
+    |> Enum.map(&String.to_charlist/1)
+    |> closest_charlists()
+  end
+
+  def closest_charlists([head | tail]) do
     if closest = Enum.find(tail, &single_char_different?(&1, head)) do
       same_chars(closest, head)
     else
-      closest(tail)
+      closest_charlists(tail)
     end
   end
 
-  def same_chars(first_id, second_id) do
-    first_id_codepoints  = String.codepoints(first_id)
-    second_id_codepoints = String.codepoints(second_id)
-
-    first_id_codepoints
-    |> Enum.zip(second_id_codepoints)
+  def same_chars(charlist1, charlist2) do
+    charlist1
+    |> Enum.zip(charlist2)
     |> Enum.reject(fn {point_1, point_2} -> point_1 != point_2 end)
     |> Enum.map(fn {a, _b} -> a end)
     |> List.to_string()
   end
 
-  def single_char_different?(first_id, second_id) do
-    first_id_codepoints  = String.codepoints(first_id)
-    second_id_codepoints = String.codepoints(second_id)
-
-    first_id_codepoints
-    |> Enum.zip(second_id_codepoints)
+  def single_char_different?(charlist1, charlist2) do
+    charlist1
+    |> Enum.zip(charlist2)
     |> Enum.count(fn {point_1, point_2} -> point_1 != point_2 end)
     |> Kernel.==(1)
   end
 
-  def checksum(filename) when is_binary(filename) do
+  def checksum() do
     File.stream!("lib/ids.txt")
     |> Stream.map(&String.trim_trailing/1)
     |> Enum.to_list

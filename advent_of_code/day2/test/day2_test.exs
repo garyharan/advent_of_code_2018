@@ -39,18 +39,22 @@ defmodule Day2Test do
   end
 
   test "calculates checksum from file" do
-    assert Day2.checksum("ids.txt") == 8118
+    assert Day2.checksum() == 8118
   end
 
   test "find closest differing id" do
     assert Day2.closest([
-    "abcde",
-    "fghij",
-    "klmno",
-    "pqrst",
-    "fguij",
-    "axcye",
-    "wvxyz"
-  ]) == "fgij" # ["fghij", "fguij"] are differing by a single char
+      "abcde",
+      "fghij",
+      "klmno",
+      "pqrst",
+      "fguij",
+      "axcye",
+      "wvxyz"
+    ]) == "fgij" # ["fghij", "fguij"] are differing by a single char
+  end
+
+  test "finds closest differing id from file" do
+    assert Day2.closest() == "jbbenqtlaxhivmwyscjukztdp"
   end
 end
