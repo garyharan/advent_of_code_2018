@@ -1,46 +1,37 @@
 defmodule Day14 do
-
   def next_ten(iterations) when is_integer(iterations) do
-    {tuple, _index1, _index2} = Day14.generate(iterations + 10)
+    {binary, _index1, _index2} = Day14.generate(iterations + 10)
 
-    tuple
-    |> Tuple.to_list
-    |> Enum.slice(iterations, 10)
+    binary
+    |> Binary.part(iterations, 10)
+    |> Binary.to_list()
     |> Enum.join("")
   end
 
   def generate(iterations) when is_integer(iterations) do
-    Day14.generate({{3,7}, 0, 1, iterations})
+    Day14.generate({<<3,7>>, 0, 1, iterations})
   end
 
-  def generate({tuple, index1, index2, 0}) do
-    {tuple, index1, index2}
+  def generate({binary, index1, index2, 0}) do
+    {binary, index1, index2}
   end
 
-  def generate({tuple, index1, index2, iterations}) do
-    elven_digits = Integer.digits(elem(tuple, index1) + elem(tuple, index2))
+  def generate({binary, index1, index2, iterations}) do
+    elven_digits = Integer.digits(Binary.at(binary, index1) + Binary.at(binary, index2))
 
-    tuple = Day14.append_digits_to_tuple(tuple, elven_digits)
+    binary = <<binary::binary, :erlang.list_to_binary(elven_digits)::binary>>
 
     Day14.generate({
-      tuple,
-      Day14.calculate_new_index(tuple, index1),
-      Day14.calculate_new_index(tuple, index2),
+      binary,
+      Day14.calculate_new_index(binary, index1),
+      Day14.calculate_new_index(binary, index2),
       iterations - 1
     })
   end
 
-  def append_digits_to_tuple(accumulator, [head | tail]) do
-    append_digits_to_tuple(Tuple.append(accumulator, head), tail)
-  end
-
-  def append_digits_to_tuple(accumulator, []) do
-    accumulator
-  end
-
-  def calculate_new_index(tuple, index) do
-    len       = tuple_size(tuple)
-    new_index = elem(tuple, index) + 1 + index
+  def calculate_new_index(binary, index) do
+    len       = byte_size(binary)
+    new_index = Binary.at(binary, index) + 1 + index
 
     if new_index >= len do
       rem(new_index, len)
