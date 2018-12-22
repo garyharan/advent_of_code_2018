@@ -1,0 +1,4 @@
+%{
+  "binary": {:hex, :binary, "0.0.5", "20d816f7274ea34f1b673b4cff2fdb9ebec9391a7a68c349070d515c66b1b2cf", [:mix], []},
+  "eflame": {:hex, :eflame, "1.0.1", "0664d287e39eef3c413749254b3af5f4f8b00be71c1af67d325331c4890be0fc", [:mix], []},
+}
