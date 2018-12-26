@@ -22,3 +22,5 @@ defmodule Day14Test do
     assert Day14.calculate_new_index(<<3,7,1,0>>, 0) == 0
   end
 end
+
+
